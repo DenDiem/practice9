@@ -6,12 +6,25 @@
     <title>Title</title>
 </head>
 <body>
-
+<a href="/login" th:if="${#authorization.expression('!isAuthenticated()')}">Sign In</a>
+<a href="/register" th:if="${#authorization.expression('!isAuthenticated()')}">Sign Up</a>
+<a href="/logout" th:if="${#authorization.expression('isAuthenticated()')}">Sign Out</a>
+<a href="/book-favorite/books-list" th:if="${#authorization.expression('isAuthenticated()')}">Favorite</a>
     <div class="box1">
             <div class="text-box"><p class="title-box">Title:</p><p th:text="${book.title}"> 12</p></div>
              <div class="text-box"><p class="title-box">ISBN:</p><p th:text="${book.isbn}"> 12</p></div>
             <div class="text-box"><p class="title-box">Author:</p><p th:text="${book.author}"> 12</p></div>
 This is a page of book
+
+        <div th:switch="${flag}">
+            <form th:case="true" th:action="@{'/book-favorite/' + ${book.id}}" method="POST">
+                <input type="submit" name="action" value="add" />
+            </form>
+            <form  th:case="false" th:action="@{'/book-favorite-delete/' + ${book.id}}" method="POST">
+                <input type="submit" name="action" value="delete" />
+            </form>
+
+        </div>
 
     <form action="/books-list" method="GET">
         <input type="submit" name="action" value="back" />

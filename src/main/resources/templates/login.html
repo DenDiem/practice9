@@ -16,5 +16,8 @@
     <div><label> Password: <input type="password" name="password"/> </label></div>
     <div><input type="submit" value="Sign In"/></div>
 </form>
+<a href="/login" th:if="${#authorization.expression('!isAuthenticated()')}">Sign In</a>
+<a href="/register" th:if="${#authorization.expression('!isAuthenticated()')}">Sign Up</a>
+<a href="/logout" th:if="${#authorization.expression('isAuthenticated()')}">Sign Out</a>
 </body>
 </html>

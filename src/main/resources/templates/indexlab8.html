@@ -1,0 +1,99 @@
+<!DOCTYPE html><html xmlns:th="https://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<div class="box">
+    <div class="name-box">Add books</div>
+    <form id="ajax-search">
+        <p>Id: <input type="text" name="letter" /></p>
+        <button type="submit">search</button>
+    </form>
+    <form id="addBook" >
+        <p>Name: <input type="text" name="title" /></p>
+        <p>isbn: <input type="text" name="isbn" /></p>
+        <p>Author: <input type="text" name="author" /></p>
+        <button type="submit">Add book</button>
+    </form>
+
+    <table >
+        <thead>
+        <th>name</th>
+        <th>isbn</th>
+        <th>author</th>
+        <th>details</th>
+
+        </thead>
+        <tbody id = 'bookTable' >
+        </tbody>
+    </table>
+    </div>
+</div>
+
+<script>
+    $(function(){
+        $('#addBook').submit(function(e){
+            var $books = $('#bookTable');
+            $books.empty();
+            e.preventDefault();
+                   console.log(1123)
+
+
+            $.ajax({
+                type: 'POST',
+                url: '/add-book-ajax',
+                dataType: 'json',
+                data: JSON.stringify({
+                    title: $(this).find('[name=title]').val(),
+                    isbn: $(this).find('[name=isbn]').val(),
+                    author: $(this).find('[name=author]').val()
+                }),
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('Content-Type', 'application/json')
+                },
+                success: function (response) {
+                    var bookEntities = response["bookEntities"];
+                    bookEntities.forEach(function(book){
+                        $books.append('<tr><td>' + book.title + '</td><td>' + book.isbn + '</td><td>' + book.author + '</td><td><form action="/book/'+book.id+'" method="GET">\n' +
+                            '    <input type="submit" name="action" value="details" />\n' +
+                            '</form></td></tr>');
+                    })
+                }
+            });
+        });
+        $('#ajax-search').submit(function(e){
+            var $books = $('#bookTable');
+            $books.empty();
+            e.preventDefault();
+            console.log(1123)
+            console.log($(this).find('[name=letter]').val());
+
+            $.ajax({
+                type: 'POST',
+                url: '/ajax-search',
+                dataType: 'json',
+                data: JSON.stringify({
+                    letter: $(this).find('[name=letter]').val()
+
+                }),
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('Content-Type', 'application/json')
+                },
+                success: function (response) {
+                    var bookEntities = response["bookEntities"];
+                    bookEntities.forEach(function(book){
+                        $books.append('<tr><td>' + book.title + '</td><td>' + book.isbn + '</td><td>' + book.author + '</td><td><form action="/book/'+book.id+'" method="GET">\n' +
+                            '    <input type="submit" name="action" value="details" />\n' +
+                            '</form></td></tr>');
+                    })
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

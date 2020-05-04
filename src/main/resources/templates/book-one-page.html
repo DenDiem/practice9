@@ -1,0 +1,21 @@
+<!DOCTYPE html><html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Title</title>
+</head>
+<body>
+
+    <div class="box1">
+            <div class="text-box"><p class="title-box">Title:</p><p th:text="${book.title}"> 12</p></div>
+             <div class="text-box"><p class="title-box">ISBN:</p><p th:text="${book.isbn}"> 12</p></div>
+            <div class="text-box"><p class="title-box">Author:</p><p th:text="${book.author}"> 12</p></div>
+This is a page of book
+
+    <form action="/books-list" method="GET">
+        <input type="submit" name="action" value="back" />
+    </form>
+</div>
+</body>
+</html>
